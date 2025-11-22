@@ -7,19 +7,31 @@ class NewAccount {
         username = inputUsername;
         password = inputPassword;
 
-        std::cout << "Setup Account!" << std::endl;
-        std::cout << username << std::endl;
-        std::cout << password << std::endl;
+        std::cout << std::endl << "Setup Account!" << std::endl << std::endl;
         }
 
-        void menu(int& menuFunction);
+        void menu(int& menuFunction, NewAccount& account);
 
     private:
         // The data itself
-        float balance;
+        float balance = 0;
         std::string username;
         std::string password;
+
+        void viewAccount(const std::string& username, const float& balance);
+        void addBalance(float& balance);
+        void removeBalance(float& balance);
+        void changeUsername();
+        void changePassword();
 };
+
+bool checkNegative(const float& number) {
+    if (number >= 0) {
+        return false;
+    } else {
+        return true;
+    }
+}
 
 int main() {
     std::string username;
@@ -35,17 +47,15 @@ int main() {
 
     int menuSelection;
 
-    //Account.menu(menuSelection);
-
     while (true) {
-        Account.menu(menuSelection);
+        Account.menu(menuSelection, Account);
     }
 
     return 0;
 }
 
 // Menu Function to Loop Back to Every Time
-void menu(int& menuSelection) {
+void NewAccount::menu(int& menuSelection, NewAccount& account) {
     std::cout << "-- Bank System --" << std::endl;
     std::cout << "[1] View Account" << std::endl;
     std::cout << "[2] Add Balance" << std::endl;
@@ -55,15 +65,15 @@ void menu(int& menuSelection) {
 
     switch (menuSelection) {
         case 1:
-            std::cout << "Chose 1" << std::endl;
+            account.viewAccount(account.username, account.balance);
             //viewAccount();
             break;
         case 2:
-            std::cout << "Chose 2" << std::endl;
+            account.addBalance(account.balance);
             //addBalance();
             break;
         case 3:
-            std::cout << "Chose 3" << std::endl;
+            account.removeBalance(account.balance);
             //removeBalance();
             break;
         default:
@@ -72,26 +82,59 @@ void menu(int& menuSelection) {
 }
 
 // View Account (Name, Balance)
-void viewAccount() {
-
+void NewAccount::viewAccount(const std::string& username, const float& balance) {
+    std::cout << std::endl << "Username: " << username << std::endl;
+    std::cout << "Balance: " << balance << std::endl <<std::endl;
 }
 
 // Add Balance Function
-void addBalance() {
+void NewAccount::addBalance(float& balance) {
+    float input;
+    std::cout << std::endl << "Enter Balance to Add: ";
+    std::cin >> input;
 
+    bool isInputNegative = checkNegative(input);
+
+    if (isInputNegative) {
+        std::cout << "Cannot Have a Negative Input!" << std::endl << std::endl;
+        return;
+    } else {
+        balance += input;
+
+        std::cout << "New Balance: " << balance << std::endl << std::endl;
+    }
 }
 
 // Remove Balance Function
-void removeBalance() {
+void NewAccount::removeBalance(float& balance) {
+    float input;
+    std::cout << "Enter Balance to Remove: ";
+    std::cin >> input;
 
+    bool isInputNegative = checkNegative(input);
+
+    if (isInputNegative) {
+        std::cout << "Cannot Have a Negative Input!" << std::endl << std::endl;
+        return;
+    }
+
+    float newBalance = balance - input;
+    bool isBalanceNegative = checkNegative(newBalance);
+
+    if (isBalanceNegative) {
+        std::cout << "Cannot Have a Negative Balance!" << std::endl << std::endl;
+    } else {
+        balance = newBalance;
+        std::cout << "New Balance: " << balance << std::endl << std::endl;
+    }
 }
 
 // Change Username Function
-void changeUsername() {
+void NewAccount::changeUsername() {
 
 }
 
 // Change Password Function
-void changePassword() {
+void NewAccount::changePassword() {
 
 }
